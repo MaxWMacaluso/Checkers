@@ -16,11 +16,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    grid.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    piece.cpp \
+    square.cpp
 
 HEADERS += \
-    mainwindow.h
+    Piece_Type.h \
+    grid.h \
+    mainwindow.h \
+    piece.h \
+    square.h
 
 FORMS += \
     mainwindow.ui
