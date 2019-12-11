@@ -26,6 +26,7 @@ public:
         int GetY(){return y_;}
         int GetRow(){return vecPosRow_;}
         int GetCol(){return vecPosCol_;}
+        QColor GetColor(){return color_;}
         vector<Square*> GetAvailableMoves() {return available_moves_;}
 
         //SETTERS, INLINE

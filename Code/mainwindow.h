@@ -32,9 +32,11 @@ public slots:
     void MakeBoard();
 
     void Recolor();
-    void UpdateBoard(int x, int y);
+    void RecolorPieces();
+    void UpdateBoard(int x, int y,Piece_Type p,QColor c);
     void makeBarChart();
     void ConnectHelper();
+    void Play();
 
 
 public slots:
@@ -48,6 +50,8 @@ private slots:
     void on_P1Comp_clicked();
     void on_P2Human_clicked();
     void on_P2Comp_clicked();
+
+    void on_GO_clicked();
 
 private:
     Ui::MainWindow* ui;

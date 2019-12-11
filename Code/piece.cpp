@@ -40,9 +40,25 @@ void Piece::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
     QBrush b = painter->brush();
     QColor black(Qt::black); //Alive
+    QColor m(Qt::magenta);
+    QColor dm(Qt::darkMagenta);
+    QColor c(Qt::cyan);
+    QColor dc(Qt::darkCyan);
     if (this->color_ == black)
     {
         painter->setBrush(QBrush(Qt::black));
+    }
+    else if(this->color_ == m){
+         painter->setBrush(QBrush(Qt::magenta));
+    }
+    else if(this->color_ == dm){
+         painter->setBrush(QBrush(Qt::darkMagenta));
+    }
+    else if(this->color_ == c){
+         painter->setBrush(QBrush(Qt::cyan));
+    }
+    else if(this->color_ == dc){
+         painter->setBrush(QBrush(Qt::darkCyan));
     }
     else
     {
