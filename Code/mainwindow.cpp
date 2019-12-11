@@ -395,6 +395,7 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
     //Used for human players
     bool found_valid_square = false;
 
+    Piece * to_delete = NULL;
 
     //If P1's turn
     if (turn_ == 1 && click->GetTeam() == 1)
@@ -440,6 +441,8 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() - 1];
+
                     PG[click->GetRow() - 1][click->GetCol() - 1] = NULL;
 
                     //Set new coordinates for piece
@@ -455,7 +458,11 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() + 1];
                     PG[click->GetRow() - 1][click->GetCol() + 1] = NULL;
+
+
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -470,6 +477,8 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() - 1];
+
                     PG[click->GetRow() + 1][click->GetCol() - 1] = NULL;
 
                     //Set new coordinates for piece
@@ -485,7 +494,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() + 1];
                     PG[click->GetRow() + 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -579,7 +590,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() - 1];
                     PG[click->GetRow() - 1][click->GetCol() - 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -594,7 +607,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() + 1];
                     PG[click->GetRow() - 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -609,7 +624,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() - 1];
                     PG[click->GetRow() + 1][click->GetCol() - 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -624,7 +641,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() + 1];
                     PG[click->GetRow() + 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -683,7 +702,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() - 1];
                     PG[click->GetRow() - 1][click->GetCol() - 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -698,7 +719,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() + 1];
                     PG[click->GetRow() - 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -713,7 +736,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() - 1];
                     PG[click->GetRow() + 1][click->GetCol() - 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -728,7 +753,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() + 1];
                     PG[click->GetRow() + 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(move_to->GetRow());
@@ -822,7 +849,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() - 1];
                     PG[click->GetRow() - 1][click->GetCol() - 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -837,7 +866,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() - 1][click->GetCol() + 1];
                     PG[click->GetRow() - 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -852,6 +883,8 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() - 1];
+
                     PG[click->GetRow() + 1][click->GetCol() - 1] = NULL;
 
                     //Set new coordinates for piece
@@ -867,7 +900,9 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                 {
                     //Delete current piece from board and kill middle piece
                     PG[click->GetRow()][click->GetCol()] = NULL;
+                    to_delete = PG[click->GetRow() + 1][click->GetCol() + 1];
                     PG[click->GetRow() + 1][click->GetCol() + 1] = NULL;
+
 
                     //Set new coordinates for piece
                     click->SetRow(selected_square->GetRow());
@@ -919,7 +954,10 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
     //Update game board after changes
 
     //DeleteNullPieces();
-
+    if(to_delete != NULL){
+       qDebug() << "removing";
+       cellScene_->removeItem(to_delete);
+    }
 
     g.SetPieceGrid(PG);
 
