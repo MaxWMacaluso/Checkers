@@ -28,6 +28,11 @@ QPainterPath Piece::shape() const
     return path;
 }
 
+void Piece::prepareGeometryChange()
+{
+
+}
+
 
 void Piece::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {

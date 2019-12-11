@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "square.h"
+#include "Piece_Type.h"
 
 #include <iostream>
 #include <QGraphicsScene>
@@ -44,8 +45,8 @@ void MainWindow::makeBarChart()
 
     bars_[0] = C1Wins_ /10.0;
     bars_[1] = C2Wins_ /10.0;
-    qDebug() << C1Wins_;
-    qDebug() << bars_[0];
+//    qDebug() << C1Wins_;
+//    qDebug() << bars_[0];
     barScene_->addRect(1 * (bw_ /4), (bh_) * (1-(bars_[0])), bw_ /4 , bh_,outlinePen);
     barScene_->addRect(2 * (bw_ / 4), (bh_) * (1-(bars_[1])), bw_ / 4, bh_,outlinePen);
     barScene_->update();
@@ -53,6 +54,12 @@ void MainWindow::makeBarChart()
 
 
 }
+
+//void MainWindow::DeleteNullPieces()
+//{
+
+
+//}
 
 void MainWindow::Recolor()
 {
@@ -71,7 +78,33 @@ void MainWindow::Recolor()
     g.SetCellGrid(tmp);
     cellScene_->update();
 }
+void MainWindow::UpdateBoard(int col,int row)
+{
 
+
+     vector<vector<Piece*>> tmp = g.GetPieceGrid();
+
+     Piece * temp = tmp[row][col];
+     QColor b(Qt::black);
+     QColor gr(Qt::gray);
+     QColor set;
+     int team;
+     if (temp->GetTeam() == 2){
+         set = gr;
+         team=2;
+     }
+     else{
+         set=b;
+         team=1;
+     }
+     Piece * n = new Piece(set,team,true,Piece_Type::Normal,col,row);
+     cellScene_->addItem(n);
+     tmp[row][col] = n;
+
+     g.SetPieceGrid(tmp);
+     ConnectHelper();
+     //cellScene_->update();
+}
 void MainWindow::MakeBoard()
 {
     ui->setupUi(this);
@@ -100,7 +133,12 @@ void MainWindow::MakeBoard()
     makeBarChart();
 
 
+    ConnectHelper();
 
+}
+
+void MainWindow::ConnectHelper()
+{
     //connect left click feature to all squares
     vector<vector<Square*>>  tmp = g.GetCellGrid();
     for (vector<Square*> v : tmp)
@@ -126,8 +164,12 @@ void MainWindow::MakeBoard()
         }
     }
 
-
-
+    //Connect the buttons
+    connect(ui->newGame, &QAbstractButton::clicked, this, &MainWindow::on_newGame_clicked);
+    connect(ui->P1Human, &QAbstractButton::clicked, this, &MainWindow::on_P1Human_clicked);
+    connect(ui->P2Human, &QAbstractButton::clicked, this, &MainWindow::on_P2Human_clicked);
+    connect(ui->P1Comp, &QAbstractButton::clicked, this, &MainWindow::on_P1Comp_clicked);
+    connect(ui->P2Comp, &QAbstractButton::clicked, this, &MainWindow::on_P2Comp_clicked);
 }
 
 //Change name of slot
@@ -148,54 +190,70 @@ void MainWindow::on_newGame_clicked()
 void MainWindow::SLeftClickSlot(Square* click)
 {
 
-    qDebug() << "---------------------";
-    qDebug() << "SQUARE";
+//    qDebug() << "---------------------";
+//    qDebug() << "SQUARE";
 
     vector<vector<Piece*>> PG = g.GetPieceGrid();
-    if (PG[click->GetRow()][click->GetCol()] == NULL)
-    {
-        qDebug() << "NULL";
-    }
+
+//    if (PG[click->GetRow()][click->GetCol()] == NULL)
+//    {
+//        qDebug() << "NULL";
+//    }
     QColor green(Qt::green);
-    qDebug() << "LEFT CLICK !";
-    qDebug() << "ROW" << click->GetRow();
-    qDebug() << "COL:" << click->GetCol();
-    qDebug() << "---------------------";
+//    qDebug() << "LEFT CLICK !";
+//    qDebug() << "ROW" << click->GetRow();
+//    qDebug() << "COL:" << click->GetCol();
+//    qDebug() << "---------------------";
     if(click->GetColor() == green){
-        //TakeTurn();
+        TakeTurn(click);
         Recolor();
     }
 }
 
 void MainWindow::SRightClickSlot(Square* click)
 {
-    qDebug() << "SQUARE";
-    qDebug() << "RIGHT CLICK !";
-    qDebug() << click->GetX();
-    qDebug() << "Y" << click->GetY();
+//    qDebug() << "SQUARE";
+//    qDebug() << "RIGHT CLICK !";
+//    qDebug() << click->GetX();
+//    qDebug() << "Y" << click->GetY();
 
-    TakeTurn(click);
+    //TakeTurn(click);
 }
 
 void MainWindow::PLeftClickSlot(Piece* click)
 {
     Recolor();
     QColor c(Qt::green);
-    qDebug() << "Piece";
+    if (click->GetPieceType() == Piece_Type::King)
+    {
+        qDebug() << "KING";
+    }
+    if (click->GetPieceType() == Piece_Type::Ace)
+    {
+        qDebug() << "KING";
+    }
+    if (click->GetPieceType() == Piece_Type::Normal)
+    {
+        qDebug() << "NORM";
+    }
 
     //Change value of current_piece if teams match
     if (turn_ == click->GetTeam())
     {
         current_piece = click;
     }
+    //current_piece = click;
 
     //qDebug() << "Team: " << click->GetTeam();
-    qDebug() << "LEFT CLICK !";
-    qDebug() << "Row"<< click->GetRow();
-    qDebug() << "Col" << click->GetCol();
+//    qDebug() << "LEFT CLICK !";
+//    qDebug() << "Row"<< click->GetRow();
+//    qDebug() << "Col" << click->GetCol();
+
     vector<Square*> moves = g.CurrentMoveForPiece(click);
     vector<vector<Square*>> tmp_sg = g.GetCellGrid();
-    qDebug() << "MOVES:";
+
+//    qDebug() << "MOVES:";
+
     for (int x = 0; x < moves.size(); x++)
     {
         Square * tmp = moves[x];
@@ -205,9 +263,11 @@ void MainWindow::PLeftClickSlot(Piece* click)
         tmp_sg[row][col] = tmp;
 
 
-        qDebug() << "MOVE ROW: " << moves[x]->GetRow();
-        qDebug() << "MOVE COL: " << moves[x]->GetCol();
+//        qDebug() << "MOVE ROW: " << moves[x]->GetRow();
+//        qDebug() << "MOVE COL: " << moves[x]->GetCol();
     }
+//    qDebug() << current_piece->GetCol() << current_piece->GetRow();
+
     g.SetCellGrid(tmp_sg);
     cellScene_->update();
 
@@ -215,10 +275,13 @@ void MainWindow::PLeftClickSlot(Piece* click)
 
 void MainWindow::PRightClickSlot(Piece *click)
 {
-    MakeBoard();
+    //MakeBoard();
 
-    qDebug() << "Piece";
-    qDebug() << "RIGHT CLICK !";
+//    qDebug() << "Piece";
+//    qDebug() << "RIGHT CLICK !";
+//    qDebug() << "X" <<click->GetX();
+//    qDebug() << "Y" << click->GetY();
+
 }
 
 MainWindow::~MainWindow()
@@ -229,21 +292,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_P1Human_clicked()
 {
+    qDebug() << "H1";
     P1Human = true;
 }
 
 void MainWindow::on_P1Comp_clicked()
 {
+    qDebug() << "C1";
     P2Human = false;
 }
 
 void MainWindow::on_P2Human_clicked()
 {
+    qDebug() << "H2";
     P2Human = true;
 }
 
 void MainWindow::on_P2Comp_clicked()
 {
+    qDebug() << "C2";
     P2Human = false;
 }
 
@@ -280,7 +347,43 @@ vector<Piece*> MainWindow::TeamXPieces(int team)
 
 void MainWindow::TakeTurn(Square* move_to)
 {
-    MovePiece(current_piece, move_to);
+    qDebug() << turn_;
+
+    //Only let player move the piece if its their turn
+    if (current_piece->GetTeam() == turn_)
+    {
+        int row_diff = current_piece->GetRow() - move_to->GetRow();
+        int col_diff = current_piece->GetCol() - move_to->GetCol();
+
+        //And a valid move
+        if ((row_diff == -1 || row_diff == 1 || row_diff == -2 || row_diff == 2) && (col_diff == -1 || col_diff == 1 || col_diff == -2 || col_diff == 2))
+        {
+            MovePiece(current_piece, move_to);
+        }
+    }
+
+    //P1 king
+    if (current_piece->GetTeam() == 1)
+    {
+        //If reaches end make king
+        if (current_piece->GetRow() == 0)
+        {
+            current_piece->SetPieceType(Piece_Type::King);
+        }
+    }
+
+    //P2 king
+    if (current_piece->GetTeam() == 2)
+    {
+        //If reaches end make king
+        if (current_piece->GetRow() == 7)
+        {
+            current_piece->SetPieceType(Piece_Type::King);
+        }
+    }
+
+    //ConnectHelper();
+
 }
 
 //Main take turn function for game
@@ -311,12 +414,12 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
                     found_valid_square = true;
                 }
             }
-
+            //HERE!!!!!/////////
             //Desired move to location was invalid, exit program
             if (found_valid_square == false)
             {
                 qDebug() << "Invalid Choice";
-                return;
+                //return;
             }
 
             //Now, move to valid square move_to
@@ -559,7 +662,7 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
             if (found_valid_square == false)
             {
                 qDebug() << "Invalid Choice";
-                return;
+                //return;
             }
 
             //Now, move to valid square move_to
@@ -778,6 +881,48 @@ void MainWindow::MovePiece(Piece* click, Square* move_to)
         turn_ = 1;
     }
 
+    //King stuff
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            //Top row
+            if (i == 0)
+            {
+                //P1
+                if (PG[i][j] != NULL)
+                {
+                    if (PG[i][j]->GetTeam() == 1)
+                    {
+                        PG[i][j]->SetPieceType(Piece_Type::King);
+                    }
+                }
+            }
+
+            if (i == 7)
+            {
+                if (PG[i][j] != NULL)
+                {
+                    if (PG[i][j]->GetTeam() == 2)
+                    {
+                        PG[i][j]->SetPieceType(Piece_Type::King);
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    //removes the piece we were working with
+    cellScene_->removeItem(click);
     //Update game board after changes
+
+    //DeleteNullPieces();
+
+
     g.SetPieceGrid(PG);
+
+    //to add a new piece in the square location we clicked on
+    UpdateBoard(move_to->GetCol(),move_to->GetRow());
 }

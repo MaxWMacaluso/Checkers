@@ -66,7 +66,7 @@ Grid::Grid(QGraphicsScene* scene, QGraphicsView* view)
     //For making each piece
     int team = 0;
     bool alive = true;
-    Piece_Type p = Piece_Type::Ace;
+    Piece_Type p = Piece_Type::Normal;
     QColor black(Qt::black);
     QColor gray(Qt::gray);
 

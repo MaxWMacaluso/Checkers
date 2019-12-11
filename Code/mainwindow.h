@@ -32,8 +32,10 @@ public slots:
     void MakeBoard();
 
     void Recolor();
-
+    void UpdateBoard(int x, int y);
     void makeBarChart();
+    void ConnectHelper();
+
 
 public slots:
 
